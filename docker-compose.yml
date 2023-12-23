@@ -1,0 +1,26 @@
+version: '3.7'
+
+volumes:
+    postgres:
+    pgadmin:
+
+services:
+  app:
+    container_name: app
+    build: .
+    environment:
+      DB_DSN: "postgresql://postgres:postgres@db:5432/postgres"
+    ports:
+      - 8000:8000
+
+  db:
+    container_name: db
+    image: postgres:12.2
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - 5431:5432
+    restart: unless-stopped
